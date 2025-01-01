@@ -3,16 +3,22 @@ import ParallaxScrollView from '@/components/ParallaxScrollView'
 import { ThemedText } from '@/components/ThemedText'
 import { ThemedView } from '@/components/ThemedView'
 import axios from 'axios'
-import React from 'react'
+import React, {useState} from 'react'
 import { Button, Image, Platform, StyleSheet, TextInput } from 'react-native'
 
 export default function HomeScreen() {
-  const [text, onChangeText] = React.useState('enter payload')
-  const sendRequest = () => {
-    axios.post('http://localhost:3000/', {
-      body: text,
-    })
-  }
+
+const [searchInput, setSearchInput]= useState('Enter your value');
+const [result, setResult]= useState('No');
+
+async function  FetchData(){
+    if(!searchInput){
+        alert("Please enter a search term");
+        return;
+        }
+    const res=await axios.get('http://127.0.0.1:3000/api/'+searchInput);
+    setResult(res.data);
+    }
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
@@ -29,47 +35,18 @@ export default function HomeScreen() {
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
         <TextInput
+          value={searchInput}
           style={styles.input}
-          onChangeText={onChangeText}
-          value={text}
+          onChangeText={setSearchInput}
         />
         <Button
-          onPress={sendRequest}
+          onPress={FetchData}
           title="Send Request"
           color="#242fd4"
           accessibilityLabel="Learn more about this not purple button"
         />
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText>{' '}
-          to see changes. Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this
-          starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText>{' '}
-          to get a fresh <ThemedText type="defaultSemiBold">app</ThemedText>{' '}
-          directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
+        <ThemedText style={styles.resultText}>
+            {result}
         </ThemedText>
       </ThemedView>
     </ParallaxScrollView>
