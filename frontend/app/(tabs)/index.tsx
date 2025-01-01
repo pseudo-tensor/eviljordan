@@ -1,9 +1,10 @@
-import { Image, Platform, StyleSheet } from 'react-native'
+import { Image, Platform, StyleSheet, TextInput } from 'react-native'
 
 import { HelloWave } from '@/components/HelloWave'
 import ParallaxScrollView from '@/components/ParallaxScrollView'
 import { ThemedText } from '@/components/ThemedText'
 import { ThemedView } from '@/components/ThemedView'
+import React from 'react'
 
 export default function HomeScreen() {
   return (
@@ -21,6 +22,7 @@ export default function HomeScreen() {
         <HelloWave />
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
+        <TextInput style={styles.input} />
         <ThemedText type="subtitle">Step 1: Try it</ThemedText>
         <ThemedText>
           Edit{' '}
@@ -74,5 +76,12 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     position: 'absolute',
+  },
+  input: {
+    borderColor: '#ffffff',
+    height: 40,
+    borderWidth: 1,
+    padding: 5,
+    marginVertical: 10,
   },
 })
