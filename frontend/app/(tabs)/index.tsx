@@ -1,12 +1,18 @@
-import { Image, Platform, StyleSheet, TextInput } from 'react-native'
-
 import { HelloWave } from '@/components/HelloWave'
 import ParallaxScrollView from '@/components/ParallaxScrollView'
 import { ThemedText } from '@/components/ThemedText'
 import { ThemedView } from '@/components/ThemedView'
+import axios from 'axios'
 import React from 'react'
+import { Button, Image, Platform, StyleSheet, TextInput } from 'react-native'
 
 export default function HomeScreen() {
+  const [text, onChangeText] = React.useState('enter payload')
+  const sendRequest = () => {
+    axios.post('http://localhost:3000/', {
+      body: text,
+    })
+  }
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
@@ -22,7 +28,17 @@ export default function HomeScreen() {
         <HelloWave />
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
-        <TextInput style={styles.input} />
+        <TextInput
+          style={styles.input}
+          onChangeText={onChangeText}
+          value={text}
+        />
+        <Button
+          onPress={sendRequest}
+          title="Send Request"
+          color="#242fd4"
+          accessibilityLabel="Learn more about this not purple button"
+        />
         <ThemedText type="subtitle">Step 1: Try it</ThemedText>
         <ThemedText>
           Edit{' '}
@@ -78,6 +94,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
   input: {
+    color: '#ffffff',
     borderColor: '#ffffff',
     height: 40,
     borderWidth: 1,
